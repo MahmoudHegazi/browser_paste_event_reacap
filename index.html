@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body  onkeydown="myFunction(event)">
+
+<h1>The Document Object</h1>
+<h1>The Document Object</h1>
+<h2>The execCommand() Method</h2>
+
+<p>The executeCommand() method executes a specified command on selected text.</p>
+
+<span contenteditable="false">
+  <span style="padding:10px;" id="editable" onpaste="paster(event)" onkeydown="myFunction(event)" contenteditable>where innerwheresame</span>
+</span>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+
+
+
+
+document.selectionStart = document.selectionEnd = 1;
+document.designMode = "on";
+const myElmJQueryThis = document.querySelector("#editable");
+
+const insertAt = (pos, text, newText)=>{
+    return String(text).slice(0,pos) + `<h1 id="wp_sp" dir="ltr" class="move_above_down">${newText}</h1>` + String(text).slice(pos);
+};
+
+// if there selected data while paste delete it
+// custom past functionwhile this not 2 even but ok
+function paster(e){
+  const targetElm = e.target;
+  if (targetElm === myElmJQueryThis){
+    e.preventDefault();
+    const cursorPosition = window.getSelection().getRangeAt(0).endOffset;
+    const oldText = targetElm.innerText;
+    const copiedData = e.clipboardData.getData('text/plain');
+   
+
+    targetElm.innerHTML = insertAt(cursorPosition, oldText, copiedData);
+    //targetElm.focus();
+    //targetElm.selectionStart = targetElm.SelectionEnd = 2;
+    //setTimeout(()=>{targetElm.setSelectionRange(3,3);},1000);
+    //targetElm.setSelectionRange();  console.log(`cursorPosition:${cursorPosition},oldText:${oldText},copiedData:${copiedData}`);
+  }
+}
+function myFunction(event) {
+//alert(document.querySelector("h1")==document.querySelector("h1:nth-child(1)"));
+  if (event.keyCode == 16) {
+  //console.log(document.selection);
+  
+  console.log(window.getSelection().getRangeAt(0).endOffset);
+ // console.log(window.getSelection().getRangeAt(0).setStart(myElmJQueryThis,0));
+  
+  //getRangeAt(0).commonAncestorContainer.parentNode);
+    // Execute command if user presses the SHIFT button:
+  //  document.execCommand("bold");
+  }
+}
+
+</script>
+
+</body>
+</html>
